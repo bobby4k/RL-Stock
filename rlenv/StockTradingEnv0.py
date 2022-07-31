@@ -33,7 +33,8 @@ class StockTradingEnv(gym.Env):
 
         # Prices contains the OHCL values for the last five prices
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(19,), dtype=np.float16)
+            low=0, high=1, shape=(11,), dtype=np.float16)
+            # low=0, high=1, shape=(19,), dtype=np.float16)
 
     def _next_observation(self):
         obs = np.array([
@@ -42,14 +43,14 @@ class StockTradingEnv(gym.Env):
             self.df.loc[self.current_step, 'low'] / MAX_SHARE_PRICE,
             self.df.loc[self.current_step, 'close'] / MAX_SHARE_PRICE,
             self.df.loc[self.current_step, 'volume'] / MAX_VOLUME,
-            self.df.loc[self.current_step, 'amount'] / MAX_AMOUNT,
-            self.df.loc[self.current_step, 'adjustflag'] / 10,
-            self.df.loc[self.current_step, 'tradestatus'] / 1,
-            self.df.loc[self.current_step, 'pctChg'] / 100,
-            self.df.loc[self.current_step, 'peTTM'] / 1e4,
-            self.df.loc[self.current_step, 'pbMRQ'] / 100,
-            self.df.loc[self.current_step, 'psTTM'] / 100,
-            self.df.loc[self.current_step, 'pctChg'] / 1e3,
+            # self.df.loc[self.current_step, 'amount'] / MAX_AMOUNT,
+            # self.df.loc[self.current_step, 'adjustflag'] / 10,
+            # self.df.loc[self.current_step, 'tradestatus'] / 1,
+            # self.df.loc[self.current_step, 'pctChg'] / 100,
+            # self.df.loc[self.current_step, 'peTTM'] / 1e4,
+            # self.df.loc[self.current_step, 'pbMRQ'] / 100,
+            # self.df.loc[self.current_step, 'psTTM'] / 100,
+            # self.df.loc[self.current_step, 'pctChg'] / 1e3,
             self.balance / MAX_ACCOUNT_BALANCE,
             self.max_net_worth / MAX_ACCOUNT_BALANCE,
             self.shares_held / MAX_NUM_SHARES,
@@ -70,6 +71,11 @@ class StockTradingEnv(gym.Env):
 
         action_type = action[0]
         amount = action[1]
+
+        # if action_type >= 2:
+        #     print(action)
+        #     exit()
+
 
         if action_type < 1:
             # Buy amount % of balance in shares
