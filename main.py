@@ -16,6 +16,8 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 def stock_trade(stock_file):
+    print(stock_file)
+    # exit()
     day_profits = []
     df = pd.read_csv(stock_file)
     df = df.sort_values('date')
@@ -58,7 +60,7 @@ def test_a_stock_trade(stock_code):
     plt.xlabel('step')
     plt.ylabel('profit')
     ax.legend(prop=font)
-    # plt.show()
+    plt.show()
     plt.savefig(f'./img/{stock_code}.png')
 
 

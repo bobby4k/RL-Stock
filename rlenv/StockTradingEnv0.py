@@ -14,7 +14,7 @@ MAX_OPEN_POSITIONS = 5
 MAX_STEPS = 20000
 MAX_DAY_CHANGE = 1
 
-INITIAL_ACCOUNT_BALANCE = 10000
+INITIAL_ACCOUNT_BALANCE = 1000000 #改成100w 
 
 
 class StockTradingEnv(gym.Env):
@@ -60,6 +60,10 @@ class StockTradingEnv(gym.Env):
         return obs
 
     def _take_action(self, action):
+        ## 记录这一步的时间
+        self.current_date = self.df.loc[self.current_step,"date"]
+        # print(action, self.df.loc[self.current_step,"date"])
+        # exit()
         # Set the current price to a random price within the time step
         current_price = random.uniform(
             self.df.loc[self.current_step, "open"], self.df.loc[self.current_step, "close"])
@@ -137,6 +141,7 @@ class StockTradingEnv(gym.Env):
         # self.current_step = random.randint(
         #     0, len(self.df.loc[:, 'open'].values) - 6)
         self.current_step = 0
+        self.current_date = None
 
         return self._next_observation()
 
@@ -144,7 +149,7 @@ class StockTradingEnv(gym.Env):
         # Render the environment to the screen
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
         print('-'*30)
-        print(f'Step: {self.current_step}')
+        print("Step: {}  Date: {}".format(self.current_step, self.current_date))
         print(f'Balance: {self.balance}')
         print(f'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
         print(f'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
